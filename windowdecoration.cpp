@@ -12,3 +12,5 @@ void WindowDecoration::down()
 {
 	
 }
+
+// aapje
