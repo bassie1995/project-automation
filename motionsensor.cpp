@@ -1,22 +1,37 @@
 #include "motionsensor.h"
 #include <iostream>
+#include "arduPi.h"
 
 using namespace std;
 
-MotionSensor::MotionSensor(): pLight(0)
+MotionSensor::MotionSensor(byte msadres, Light* pL): pLight(pL), address(msaddress)
 {}
 
 void MotionSensor::detectMotion()
 {
-    //code detecteren
-
-    while(1){
-    for(int i=0;i<640000000;i++)
-    {
-        // dit wordt een delay
-    }
-   cout<<"testMotion"<<endl;  // hier komt de motioncode
-    }
-
+	SerialPi Serial;
+	WirePi Wire;
+	SPIPi SPI;
 	
+	Wire.begin();
+	
+    while(1)
+    {	
+		Wire.beginTransmission(8);
+		Wire.write(byte(address));
+		Wire.endTransmission();
+
+		Wire.requestFrom(8,2);
+		val0 = Wire.read();
+		val1 = Wire.read();
+		channelReading = int(val0)*16 + int(val1>>4);
+		analogReadingArduino = channelReading * 1023 / 4095;
+		
+		if(analogReadingArduino > 6)
+		{
+			pLight->on();
+		}
+		
+		delay(100);
+	}
 }

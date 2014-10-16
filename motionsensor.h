@@ -7,10 +7,15 @@
 class MotionSensor : public Sensor
 {
 	public:
-		MotionSensor();
+		MotionSensor(byte);
 		void detectMotion();
 	private:
 		Light* pLight;
+		byte address;
+		byte val0;
+		byte val1;
+		int channelReading;
+		float analogReadingArduino;
 };
 
 #endif

@@ -4,13 +4,17 @@
 class Light
 {
 	public:
-		Light();
+		Light(int);
 		virtual ~Light();
 		bool getStatus() const;
-		virtual void on();
-		virtual void off();
+		void setStatus(bool);
+		virtual void on() =0;
+		virtual void off() =0;
+		int getAddress();
+		void setAddress(int);		
 	private:
 		bool status;
+		int address;
 };
 
 #endif
