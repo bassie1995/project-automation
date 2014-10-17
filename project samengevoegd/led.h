@@ -10,7 +10,7 @@ using namespace std;
 class LED : public Light
 {
 	public:
-		LED(string);
+		LED(int);
 		void on();
 		void off();
 

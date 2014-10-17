@@ -18,8 +18,8 @@
 *  Version 0.1
 *  Author: Anartz Nuin Jiménez
 */
-#ifndef ARDUPI_H
-#define ARDUPI_H
+
+#pragma once
 
 #include <errno.h>
 #include <fcntl.h>
@@ -393,5 +393,3 @@ void bcm2835_gpio_len(uint8_t pin);
 
 // Disable Low Detect for the specified pin.
 void bcm2835_gpio_clr_len(uint8_t pin);
-
-#endif // ARDUPI_H

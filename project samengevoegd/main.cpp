@@ -14,6 +14,15 @@
 #include <string>
 #include <chrono>
 
+#define ANALOG_0 220
+#define ANALOG_1 156
+#define ANALOG_2 204
+#define ANALOG_3 140
+#define ANALOG_4 172
+#define ANALOG_5 236
+#define ANALOG_6 188
+#define ANALOG_7 252
+
 using namespace std;
 
 	/*Light*/
@@ -37,16 +46,21 @@ using namespace std;
 
 void setup() {
 	// Activate PWM for the 2 LED lights
+	cout<<"AAPJE Setup Begin"<<endl;
+	
 	system("sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"CC\"");
 	system("sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"8C\"");
 	
-	kitchen = new Light("CC");
-	bathroom = new LED("8C");
-	livingroom = new RGBLight();
+	kitchen = new Light(212);		// placeholder
+	bathroom = new LED(969);		// placeholder
+	livingroom = new RGBLight(696);	// placeholder
 	
-	msKitchen = new MotionSensor(string("9C"), kitchen);
-	msBathroom = new MotionSensor(string("8C"), bathroom);
-	msLivingroom = new MotionSensor(string("CC"), livingroom);
+	msKitchen = new MotionSensor(ANALOG_1, kitchen);
+	msBathroom = new MotionSensor(ANALOG_2, bathroom);
+	msLivingroom = new MotionSensor(ANALOG_3, livingroom);
+	cout<<"AAPJE Setup End"<<endl;
+	
+	
 }
 
 void pollingMSandButtons() {
@@ -56,14 +70,16 @@ void pollingMSandButtons() {
 	SPIPi SPI;
 
 	Wire.begin();
-
-	while(1){
+	cout<<"AAPJE Polling MSand B1"<<endl;
+	while(1)
+	{	
+		
 		msKitchen->detectMotion(&Wire);
         msBathroom->detectMotion(&Wire);
         msLivingroom->detectMotion(&Wire);
-
-        buttonSmokeDetector->isActive();
-		buttonBed->isActive();
+		cout<<"AAPJEPolling MSand B2"<<endl;
+//      buttonSmokeDetector->isActive();
+//		buttonBed->isActive();
 	}
 }
 void logicController(){
@@ -81,7 +97,7 @@ void logicController(){
         statusDetector = buttonSmokeDetector->isActive();
 
         if(statusDay) //true als het dag is
-        {
+		{
             if(statusKitchen)
             {
                 msKitchen->lightOn();
@@ -122,19 +138,19 @@ void logicController(){
 }
 void pollingTempSensor()
 {
+	cout<<"AAPJE PollingTempBegin"<<endl;
     this_thread::sleep_for(chrono::seconds(3));
+    cout<<"AAPJE PollingTempEnd"<<endl;
 }
 
 int main()
 {
-	void setup();
-
-
-	
+	void setup(); // Y U NO WORK
 	thread pollingQuick (pollingMSandButtons);
     thread pollingSlow (pollingTempSensor);
-    pollingQuick.join();
-
+    
+    //this_thread::sleep_for(chrono::seconds(1));
+	cout<<"AAPJE Fin"<<endl;
 	/*Threads*/
 /*	thread ms1(&MotionSensor::detectMotion,msKitchen);
 	thread ms2(&MotionSensor::detectMotion,msLivingroom);
@@ -148,7 +164,9 @@ int main()
 	
 	//thread timer(&);
 */
-	while(1){}
+	while(1)
+	{}
+	
 	return 0;
 }
 

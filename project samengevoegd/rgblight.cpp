@@ -2,9 +2,9 @@
 
 using namespace std;
 
-RGBLight::RGBLight(): red("00"), green("00"), blue("00"), white("00")
+RGBLight::RGBLight(int i): red("00"), green("00"), blue("00"), white("00")
 	, pred("00"), pgreen("00"), pblue("00"), pwhite("00")
-	, Light(NULL) {
+	, Light(i) {
 	
 }
 

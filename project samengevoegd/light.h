@@ -8,16 +8,15 @@ using namespace std;
 class Light
 {
 	public:
-		Light(string);
+		Light(int);
 		virtual ~Light();
 		bool getStatus() const;
-		void setStatus(bool);
 		virtual void on();
 		virtual void off();
-		string getAddress() const;
+		int getAddress() const;
 	private:
 		bool status;
-		const string address;
+		const int address;
 };
 
 #endif

@@ -12,13 +12,13 @@ using namespace std;
 class MotionSensor : public Sensor
 {
 	public:
-		MotionSensor(string, Light*);
+		MotionSensor(int, Light*);
 		void detectMotion(WirePi *);
         void lightOn();
         void lightOff();
 	private:
 		Light* pLight;
-		string address;
+		int address;
 		byte val0;
 		byte val1;
 		int channelReading;

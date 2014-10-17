@@ -13,7 +13,7 @@ using namespace std;
 class RGBLight : public Light
 {
 	public:
-		RGBLight();
+		RGBLight(int);
 		~RGBLight();
 		void on();
 		void off();

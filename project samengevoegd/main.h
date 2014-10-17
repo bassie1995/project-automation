@@ -23,9 +23,9 @@ LED bathroom(/*address on Rasberry*/);
 RGBLight livingroom;
 
 /*MOTION CONTROL*/
-MotionSensor msKitchen("9C", &kitchen); // Vul hier ook de juiste adressen in
-MotionSensor msBathroom("8C", &bathroom);
-MotionSensor msLivingroom("CC" ,&livingRoom);
+MotionSensor msKitchen("0x9C", &kitchen); // Vul hier ook de juiste adressen in
+MotionSensor msBathroom("0x8C", &bathroom);
+MotionSensor msLivingroom("0xCC" ,&livingRoom);
 
 /*BUTTONS + BUZZER*/
 Buzzer buzzerSmoke;
