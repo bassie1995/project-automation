@@ -1,18 +1,26 @@
 #ifndef RGBLIGHT_H
 #define RGBLIGHT_H
 
-#include "Light.h"
+#include "light.h"
+#include <iostream>
+#include <string>
+#include <sstream>																																																																																																																																																																										
+#include <iomanip>
+#include <stdlib.h>
+
+using namespace std;
 
 class RGBLight : public Light
 {
 	public:
 		RGBLight();
+		~RGBLight();
 		void on();
 		void off();
-		void changeColor(int, int, int);
-		void RGBLight::convertPerToHex(int, int, int, int);
+		void changeColor(int, int, int, int);
+		void convertPerToHex(int, int, int, int);
 	private:
-		char red[3], green[3], blue[3], white[3];
+		string red, green, blue, white, pred, pgreen, pblue, pwhite;
 };
 
 #endif

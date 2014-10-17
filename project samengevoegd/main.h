@@ -4,7 +4,7 @@
 #include "rgblight.h"
 #include "led.h"
 #include "switch.h"
-#include "Sensor.h"
+#include "sensor.h"
 #include "motionsensor.h"
 #include "temperaturesensor.h"
 #include "windowdecoration.h"
@@ -19,13 +19,13 @@
 
 /*Light*/
 Light kitchen(/*address on Rasberry*/);
-Led bathroom(/*address on Rasberry*/);
+LED bathroom(/*address on Rasberry*/);
 RGBLight livingroom;
 
 /*MOTION CONTROL*/
-MotionSensor msKitchen(0x9C, &kitchen); // Vul hier ook de juiste adressen in
-MotionSensor msBathroom(0x8C, &bathroom);
-MotionSensor msLivingroom(0xCC ,&livingRoom);
+MotionSensor msKitchen("9C", &kitchen); // Vul hier ook de juiste adressen in
+MotionSensor msBathroom("8C", &bathroom);
+MotionSensor msLivingroom("CC" ,&livingRoom);
 
 /*BUTTONS + BUZZER*/
 Buzzer buzzerSmoke;

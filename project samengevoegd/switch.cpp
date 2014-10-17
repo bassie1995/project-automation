@@ -3,12 +3,16 @@
 Switch::Switch(): status(0)
 {}
 
-bool Switch::getStatus() const
+bool Switch::isActive() const
 {
 	return status;
 }
 
-void Switch::setStatus(bool s)
+void Switch::activate()
 {
-	status=s;
+	status=true;
+}
+
+void Switch::deactivate() {
+	status = false;
 }

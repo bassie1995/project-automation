@@ -3,10 +3,14 @@
 
 #include "light.h"
 
+#include <string>
+
+using namespace std;
+
 class LED : public Light
 {
 	public:
-		LED(int);
+		LED(string);
 		void on();
 		void off();
 

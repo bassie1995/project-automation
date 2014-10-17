@@ -1,5 +1,5 @@
 #include "windowdecoration.h"
-#include "Buzzer.h"
+#include "buzzer.h"
 
 #ifndef SENSOR_H
 #define SENSOR_H

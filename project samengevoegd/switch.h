@@ -10,8 +10,9 @@ class Switch
 {
 	public:
 		Switch();
-		bool getStatus() const;
-		void setStatus(bool);
+		bool isActive() const;
+		void activate();
+		void deactivate();
 	private:
 		bool status;
 		vector<Light*> vLight;

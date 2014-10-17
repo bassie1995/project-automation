@@ -2,56 +2,63 @@
 
 using namespace std;
 
-RGBLight::RGBLight(): red("00"), green("00"), blue("00"), white("00") {
+RGBLight::RGBLight(): red("00"), green("00"), blue("00"), white("00")
+	, pred("00"), pgreen("00"), pblue("00"), pwhite("00") {
 	
 }
 
-void RGBlight::on(){
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/3 " + red);
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/6 " + green);
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/9 " + blue);
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/27 " + white);
+RGBLight::~RGBLight()
+{}
+
+void RGBLight::on() {
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/2 09");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/5 09");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/8 09");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/26 09");
 }
 
-void RGBLight::off(){
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/3 " + 00);
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/6 " + 00);
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/9 " + 00);
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/27 " + 00);
+void RGBLight::off() {
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/2 00");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/5 00");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/8 00");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/26 00");
 }
 
 void RGBLight::changeColor(int r, int g, int b, int w) {
 	convertPerToHex(r, g, b, w);
 	
-	if (r != red) {
-		system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/3 " + red);
-		red = r;
+	if (pred != red) {
+		system(("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/3 " + red).c_str());
 	}
-	if (g != green) {
-		system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/6 " + green);
-		green = g;
+	if (pgreen != green) {
+		system(("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/6 " + green).c_str());
+		
 	}
-	if (b != blue) {
-		system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/9 " + blue);
-		blue = b;
+	if (pblue != blue) {
+		system(("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/9 " + blue).c_str());
 	}
-	if (w != white) {
-		system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/27 " + white);
-		white = w;
+	if (pwhite != white) {
+		system(("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/27 " + white).c_str());
 	}
+	
+	pred = red;
+	pgreen = green;
+	pblue = blue;
+	pwhite = white;
 }
 
 void RGBLight::convertPerToHex(int r, int g, int b, int w) {
 	stringstream stream;
-	char buffer[3];
 	
-	r = (r * 2.55) + 0.5;
-	g = (g * 2.55) + 0.5;
-	b = (b * 2.55) + 0.5;
-	w = (w * 2.55) + 0.5;
+	stream << setfill('0') << setw(2) << hex << r;
+	red = stream.str();
 	
-	itoa(r, red, 16);
-	itoa(g, green, 16);
-	itoa(b, blue, 16);
-	itoa(w, white, 16);
+	stream << setfill('0') << setw(2) << hex << g;
+	green = stream.str();
+	
+	stream << setfill('0') << setw(2) << hex << b;
+	blue = stream.str();
+	
+	stream << setfill('0') << setw(2) << hex << w;
+	white = stream.str();
 }

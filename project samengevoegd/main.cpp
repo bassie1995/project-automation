@@ -1,16 +1,55 @@
-#include "main.h"
+#include "arduPi.h"
+#include "rgblight.h"
+#include "led.h"
+#include "switch.h"
+#include "sensor.h"
+#include "motionsensor.h"
+#include "temperaturesensor.h"
+#include "windowdecoration.h"
+#include "buzzer.h"
+#include "ipcamera.h"
+#include <time.h>
+#include <thread>
+#include <iostream>
+#include <string>
+#include <chrono>
 
 using namespace std;
 
-void setup(){
+	/*Light*/
+	Light *kitchen;
+	LED *bathroom;
+	RGBLight *livingroom;
+
+	//~ /*MOTION CONTROL*/
+	MotionSensor *msKitchen; // Vul hier ook de juiste adressen in
+	MotionSensor *msBathroom;
+	MotionSensor *msLivingroom;
+
+	Buzzer *buzzerSmoke;
+	Sensor *buttonBed;
+	Sensor *buttonSmokeDetector;
+	Switch *nightDaySwitch;
+
+	/*TEMP SENSOREN*/
+	TemperatureSensor *tempBathroom;
+	TemperatureSensor *tempLiving;
+
+void setup() {
 	// Activate PWM for the 2 LED lights
-	string start = "sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"" + to_string(/* VUL ADRES IN L1 */) + "\"";
-	system(start.c_str());
-	start = "sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"" + to_string(/* VUL ADRES IN L2 */) + "\"";
-	system(start.c_str());
+	system("sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"CC\"");
+	system("sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"8C\"");
+	
+	kitchen = new Light("CC");
+	bathroom = new LED("8C");
+	livingroom = new RGBLight();
+	
+	msKitchen = new MotionSensor(string("9C"), kitchen);
+	msBathroom = new MotionSensor(string("8C"), bathroom);
+	msLivingroom = new MotionSensor(string("CC"), livingroom);
 }
 
-void pollingMSandButtons(){
+void pollingMSandButtons() {
 
 	SerialPi Serial;
 	WirePi Wire;
@@ -19,40 +58,40 @@ void pollingMSandButtons(){
 	Wire.begin();
 
 	while(1){
-		msKitchen.detectMotion(&Wire);
-        msBathroom.detectMotion(&Wire);
-        msLivingroom.detectMotion(&Wire);
+		msKitchen->detectMotion(&Wire);
+        msBathroom->detectMotion(&Wire);
+        msLivingroom->detectMotion(&Wire);
 
-        buttonSmokeDetector.IsActive();
-		buttonBed.IsActive();
+        buttonSmokeDetector->isActive();
+		buttonBed->isActive();
 	}
 }
-void Logic_Controller(){
+void logicController(){
     bool statusKitchen;
     bool statusBathroom;
     bool statusLivingRoom;
     bool statusDay;
     bool statusDetector;
-    while(1)
-    {
-        statusKitchen = msKitchen.getStatus();
-        statusBathroom = msbathroom.getStatus();
-        statusLivingRoom =  mslivingroom.getStatus();
-        nightDaySwitch.getStatus();
-        statusDetector = buttonSmokeDetector.getStatus();
+    
+    while(1) {
+        statusKitchen = msKitchen->isActive();
+        statusBathroom = msBathroom->isActive();
+        statusLivingRoom = msLivingroom->isActive();
+        statusDay = nightDaySwitch->isActive();
+        statusDetector = buttonSmokeDetector->isActive();
 
         if(statusDay) //true als het dag is
         {
             if(statusKitchen)
             {
-                msKitchen.lightOn();
+                msKitchen->lightOn();
             }
             else{
 // hier komt de uit fuctie
             }
             if(statusBathroom)
             {
-                msBathroom.lightOn();
+                msBathroom->lightOn();
             }
             else
             {
@@ -60,7 +99,7 @@ void Logic_Controller(){
             }
             if(statusLivingRoom)
             {
-                msLivingroom.lightOn();
+                msLivingroom->lightOn();
             }
             else{
 // hier komt de uit fuctie
@@ -72,10 +111,10 @@ void Logic_Controller(){
         }
         if(statusDetector)
         {
-            buttonSmokeDetector.pBuzzer->buzzOn();
+            buttonSmokeDetector->buzzOn();
         }
         else{
-            buttonSmokeDetector.pBuzzer->buzzOff();
+            buttonSmokeDetector->buzzOff();
         }
     }
 
@@ -83,9 +122,7 @@ void Logic_Controller(){
 }
 void pollingTempSensor()
 {
-    sleep_for(std::chrono::seconds(3));
-
-
+    this_thread::sleep_for(chrono::seconds(3));
 }
 
 int main()
@@ -94,8 +131,9 @@ int main()
 
 
 	
-	threads pollingQuick(pollingMSandButtons);
-    threads pollingSlow(pollingTempSensor);
+	thread pollingQuick (pollingMSandButtons);
+    thread pollingSlow (pollingTempSensor);
+    pollingQuick.join();
 
 	/*Threads*/
 /*	thread ms1(&MotionSensor::detectMotion,msKitchen);

@@ -3,25 +3,17 @@
 
 using namespace std;
 
-Sensor::Sensor(): status(0), pBuzzer(0), pWinDec(0)
+Sensor::Sensor(): status(0), pBuzzer(0)//, pWinDec(0)
 {
 }
 
-Sensor::Sensor(Buzzer &b): status(0), pBuzzer(&b), pWinDec(0){
+Sensor::Sensor(Buzzer &b): status(0), pBuzzer(&b)//, pWinDec(0)
+{
 
 }
 
 Sensor::~Sensor()
 {}
-
-bool Sensor::getStatus() const
-{
-    return status;
-}
-void setStatus(bool s)
-{
-    status = s;
-}
 
 void Sensor::activate()
 {
@@ -32,8 +24,10 @@ void Sensor::deactivate()
 {
 	status=false;
 }
-void Sensor::IsActive()
+
+bool Sensor::isActive() const
 {
+	return false;
     //detect ingedrukt
     // activeer
 
@@ -49,4 +43,12 @@ void Sensor::IsActive()
 
     // deactiveer
 
+}
+
+void Sensor::buzzOff() {
+	pBuzzer->buzzOff();
+}
+
+void Sensor::buzzOn() {
+	pBuzzer->buzzOn();
 }
