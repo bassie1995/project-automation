@@ -1,9 +1,9 @@
 #ifndef RGBLIGHT_H
 #define RGBLIGHT_H
 
-#include "led.h"
+#include "Light.h"
 
-class RGBLight : public LED
+class RGBLight : public Light
 {
 	public:
 		RGBLight();

@@ -8,7 +8,6 @@ class TemperatureSensor : public Sensor
 	public:
 		TemperatureSensor();
 		int  getTemperature();
-		void setTemperature(int);
 	private:
 		int temperature;
 };
