@@ -7,6 +7,7 @@ class Buzzer
 		Buzzer();
 		void buzzOn();
 		void buzzOff();
+        void getStatusDetector();
 	private:
 		bool status;
 };
