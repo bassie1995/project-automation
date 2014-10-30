@@ -36,13 +36,13 @@ int main()
     WindowDecoration *windowDeco = new WindowDecoration();
 */
     /*MOTION CONTROL*/
-     MotionSensor msKitchen;
-     MotionSensor msLivingroom;
-     MotionSensor msBathroom;
+   //  MotionSensor msKitchen;
+   //  MotionSensor msLivingroom;
+    // MotionSensor msBathroom;
 
-    thread t1(&MotionSensor::detectMotion,msKitchen);
-    thread t2(&MotionSensor::detectMotion,msLivingroom);
-    thread t3(&MotionSensor::detectMotion,msBathroom);
+   // thread t1(&MotionSensor::detectMotion,msKitchen);
+    //thread t2(&MotionSensor::detectMotion,msLivingroom);
+   // thread t3(&MotionSensor::detectMotion,msBathroom);
 
 
 
@@ -50,21 +50,26 @@ int main()
 
     /*BUTTONS + BUZZER*/
       Buzzer buzzerSmoke;
-      Sensor buttonBed;
-      Sensor buttonSmokeDetector(buzzerSmoke);
+    //  Sensor buttonBed;
+    //  Sensor buttonSmokeDetector(buzzerSmoke);
 
-      thread t4(&Sensor::IsActive,buttonBed);
-      thread t5(&Sensor::IsActive,buttonSmokeDetector);
+    //  thread t4(&Sensor::IsActive,buttonBed);
+    // thread t5(&Sensor::IsActive,buttonSmokeDetector);
     /*TEMP SENSOREN*/
 
-      TemperatureSensor tempBathroom;
-      TemperatureSensor tempLiving;
-      thread t6(&TemperatureSensor::readTemperature,tempLiving);
-        t1.detach();
+     // TemperatureSensor tempBathroom;
+     // TemperatureSensor tempLiving;
+     // thread t6(&TemperatureSensor::readTemperature,tempLiving);
+      //  t1.detach();
 
+      int a;
+      puts ("Press a for buzzer. Press 'exit'.");
+      do{
+        a=getchar();
+        buzzerSmoke.buzzOn(a);
+      } while (a != '.');
 
-
-    while(1){}
+  //  while(1){}
     return 0;
 }
 
