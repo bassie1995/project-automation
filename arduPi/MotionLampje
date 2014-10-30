@@ -1,0 +1,39 @@
+#include "arduPi.h"
+#include <iostream>
+
+/*
+ * 0 = DC
+ * 1 = 9C
+ * 2 = CC
+ * 3 = 8C
+ * 4 = AC
+ * 5 = EC
+ * 6 = BC
+ * 7 = FC
+ */
+SerialPi Serial;
+WirePi Wire;
+SPIPi SPI;
+
+using namespace std;
+
+int main()
+{
+	setup();
+
+	while(1)
+	{
+		loop();
+	}
+	
+	return 0;
+}
+
+void setup()
+{
+	Wire.begin();
+}
+
+void loop()
+{	
+pinMode(0xAC, OUTPUT);

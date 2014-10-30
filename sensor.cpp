@@ -18,6 +18,10 @@ bool Sensor::getStatus() const
 {
     return status;
 }
+void setStatus(bool s)
+{
+    status = s;
+}
 
 void Sensor::activate()
 {
@@ -38,7 +42,7 @@ void Sensor::IsActive()
 //    {
 //        // dit wordt een delay
 //    }
-//   cout<<"testSensor"<<endl;  // hier komt de motioncode
+//   cout<<"testSensor"<<endl;  // hier komt de polling code
 
 //    }
 

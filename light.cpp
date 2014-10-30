@@ -1,6 +1,6 @@
 #include "light.h"
 
-Light::Light(): status(0)
+Light::Light(int i): status(0), address(i)
 {}
 
 Light::~Light()
@@ -11,12 +11,17 @@ bool Light::getStatus() const
 	return status;
 }
 
-void Light::on()
+int Light::getAddress()
 {
-	
+	return address;
 }
 
-void Light::off()
+void Light::setAddress(int i)
 {
-	
+	address=i;
+}
+
+void Light::setStatus(bool s)
+{
+	status=s;
 }

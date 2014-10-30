@@ -6,9 +6,10 @@
 class LED : public Light
 {
 	public:
-		LED();
+		LED(int);
 		void on();
 		void off();
+
 	private:
 		
 };

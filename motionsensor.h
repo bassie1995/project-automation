@@ -1,3 +1,5 @@
+#include <iostream>
+#include "arduPi.h"
 #include "light.h"
 #include "sensor.h"
 
@@ -7,10 +9,17 @@
 class MotionSensor : public Sensor
 {
 	public:
-		MotionSensor();
-		void detectMotion();
+		MotionSensor(byte);
+		void detectMotion(WirePi &);
+        void lightOn();
+        void lightOff();
 	private:
 		Light* pLight;
+		byte address;
+		byte val0;
+		byte val1;
+		int channelReading;
+		float analogReadingArduino;
 };
 
 #endif
