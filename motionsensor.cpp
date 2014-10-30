@@ -1,22 +1,12 @@
 #include "motionsensor.h"
-#include <iostream>
-#include "arduPi.h"
 
 using namespace std;
 
 MotionSensor::MotionSensor(byte msadres, Light* pL): pLight(pL), address(msaddress)
 {}
 
-void MotionSensor::detectMotion()
+void MotionSensor::detectMotion(WirePi *Wire)
 {
-	SerialPi Serial;
-	WirePi Wire;
-	SPIPi SPI;
-	
-	Wire.begin();
-	
-    while(1)
-    {	
 		Wire.beginTransmission(8);
 		Wire.write(byte(address));
 		Wire.endTransmission();
@@ -31,7 +21,4 @@ void MotionSensor::detectMotion()
 		{
 			pLight->on();
 		}
-		
-		delay(100);
-	}
 }

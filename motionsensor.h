@@ -1,3 +1,5 @@
+#include <iostream>
+#include "arduPi.h"
 #include "light.h"
 #include "sensor.h"
 
@@ -8,7 +10,7 @@ class MotionSensor : public Sensor
 {
 	public:
 		MotionSensor(byte);
-		void detectMotion();
+		void detectMotion(WirePi &);
 	private:
 		Light* pLight;
 		byte address;

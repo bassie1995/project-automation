@@ -38,7 +38,7 @@ void Sensor::IsActive()
 //    {
 //        // dit wordt een delay
 //    }
-//   cout<<"testSensor"<<endl;  // hier komt de motioncode
+//   cout<<"testSensor"<<endl;  // hier komt de polling code
 
 //    }
 

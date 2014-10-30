@@ -3,7 +3,7 @@
 
 using namespace std;
 
-LED::LED()
+LED(int tempAddress):Light(tempAddress)
 {}
 
 void LED::on()

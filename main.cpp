@@ -14,21 +14,45 @@
 
 using namespace std;
 
-int main()
-{
-	/*Light*/
-	Led kitchen();
-	
-	// Activate PWM for the 3 lights in the rooms
+void setup(){
+	// Activate PWM for the 2 LED lights
 	string start = "sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"" + to_string(/* VUL ADRES IN L1 */) + "\"";
 	system(start.c_str());
 	start = "sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"" + to_string(/* VUL ADRES IN L2 */) + "\"";
 	system(start.c_str());
+}
+
+void pollingMSandButtons(){
+
+	SerialPi Serial;
+	WirePi Wire;
+	SPIPi SPI;
+
+	Wire.begin();
+
+	while(1){
+		msKitchen.detectMotion(&Wire);
+		msbathroom.detectMotion(&Wire);
+		mslivingroom.detectMotion(&Wire);
+
+		buttonSmokeDetector.IsActive()
+		buttonBed.IsActive();
+	}
+}
+
+int main()
+{
+	void setup();
+
+	/*Light*/
+	Light kitchen(/*address on Rasberry*/);
+	Led bathroom(/*address on Rasberry*/);
+	RGBLight livingroom;
 	
 	/*MOTION CONTROL*/
 	MotionSensor msKitchen(0x9C, &kitchen); // Vul hier ook de juiste adressen in
-	MotionSensor msLivingroom(0xCC ,&livingRoom);
 	MotionSensor msBathroom(0x8C, &bathroom);
+	MotionSensor msLivingroom(0xCC ,&livingRoom);
 
 	/*BUTTONS + BUZZER*/
 	Buzzer buzzerSmoke;
@@ -39,8 +63,10 @@ int main()
 	TemperatureSensor tempBathroom;
 	TemperatureSensor tempLiving;
 	
+	threads pollingQuick(pollingMSandButtons);
+
 	/*Threads*/
-	thread ms1(&MotionSensor::detectMotion,msKitchen);
+/*	thread ms1(&MotionSensor::detectMotion,msKitchen);
 	thread ms2(&MotionSensor::detectMotion,msLivingroom);
 	thread ms3(&MotionSensor::detectMotion,msBathroom);
 	
@@ -51,7 +77,7 @@ int main()
 	thread rt(&TemperatureSensor::readTemperature,tempLiving);
 	
 	//thread timer(&);
-		  
+*/
 	while(1){}
 	return 0;
 }

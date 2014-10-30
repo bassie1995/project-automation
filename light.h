@@ -8,13 +8,12 @@ class Light
 		virtual ~Light();
 		bool getStatus() const;
 		void setStatus(bool);
-		virtual void on() =0;
-		virtual void off() =0;
-		int getAddress();
-		void setAddress(int);		
+		virtual void on();
+		virtual void off();
+		int getAddress() const;
 	private:
 		bool status;
-		int address;
+		const int address;
 };
 
 #endif
