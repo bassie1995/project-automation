@@ -11,6 +11,8 @@ class MotionSensor : public Sensor
 	public:
 		MotionSensor(byte);
 		void detectMotion(WirePi &);
+        void lightOn();
+        void lightOff();
 	private:
 		Light* pLight;
 		byte address;

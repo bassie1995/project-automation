@@ -10,7 +10,8 @@ class Sensor
 		Sensor();
         Sensor(Buzzer &);
 		virtual ~Sensor();
-		bool getStatus() const;
+        bool getStatus() const;
+        void setStatus(bool);
 		void activate();
 		void deactivate();
         void IsActive();

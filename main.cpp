@@ -4,15 +4,29 @@
 #include "Sensor.h"
 #include "motionsensor.h"
 #include "temperaturesensor.h"
-#include "windowdecoration.h"
-#include "buzzer.h"
-#include "ipcamera.h"
-#include <time.h>
-#include <thread>
-#include <iostream>
-#include <string>
+
 
 using namespace std;
+
+/*Light*/
+Light kitchen(/*address on Rasberry*/);
+Led bathroom(/*address on Rasberry*/);
+RGBLight livingroom;
+
+/*MOTION CONTROL*/
+MotionSensor msKitchen(0x9C, &kitchen); // Vul hier ook de juiste adressen in
+MotionSensor msBathroom(0x8C, &bathroom);
+MotionSensor msLivingroom(0xCC ,&livingRoom);
+
+/*BUTTONS + BUZZER*/
+Buzzer buzzerSmoke;
+Sensor buttonBed;
+Sensor buttonSmokeDetector(buzzerSmoke);
+Switch nightDaySwitch;
+
+/*TEMP SENSOREN*/
+TemperatureSensor tempBathroom;
+TemperatureSensor tempLiving;
 
 void setup(){
 	// Activate PWM for the 2 LED lights
@@ -32,38 +46,82 @@ void pollingMSandButtons(){
 
 	while(1){
 		msKitchen.detectMotion(&Wire);
-		msbathroom.detectMotion(&Wire);
-		mslivingroom.detectMotion(&Wire);
+        msBathroom.detectMotion(&Wire);
+        msLivingroom.detectMotion(&Wire);
 
-		buttonSmokeDetector.IsActive()
+        buttonSmokeDetector.IsActive();
 		buttonBed.IsActive();
 	}
+}
+void Logic_Controller(){
+    bool statusKitchen;
+    bool statusBathroom;
+    bool statusLivingRoom;
+    bool statusDay;
+    bool statusDetector;
+    while(1)
+    {
+        statusKitchen = msKitchen.getStatus();
+        statusBathroom = msbathroom.getStatus();
+        statusLivingRoom =  mslivingroom.getStatus();
+        nightDaySwitch.getStatus();
+        statusDetector = buttonSmokeDetector.getStatus();
+
+        if(statusDay) //true als het dag is
+        {
+            if(statusKitchen)
+            {
+                msKitchen.lightOn();
+            }
+            else{
+// hier komt de uit fuctie
+            }
+            if(statusBathroom)
+            {
+                msBathroom.lightOn();
+            }
+            else
+            {
+ // hier komt de uit fuctie
+            }
+            if(statusLivingRoom)
+            {
+                msLivingroom.lightOn();
+            }
+            else{
+// hier komt de uit fuctie
+            }
+        }
+        else // hier als het nacht is
+        {
+
+        }
+        if(statusDetector)
+        {
+            buttonSmokeDetector.pBuzzer->buzzOn();
+        }
+        else{
+            buttonSmokeDetector.pBuzzer->buzzOff();
+        }
+    }
+
+
+}
+void pollingTempSensor()
+{
+    sleep_for(std::chrono::seconds(3));
+
+
 }
 
 int main()
 {
 	void setup();
 
-	/*Light*/
-	Light kitchen(/*address on Rasberry*/);
-	Led bathroom(/*address on Rasberry*/);
-	RGBLight livingroom;
-	
-	/*MOTION CONTROL*/
-	MotionSensor msKitchen(0x9C, &kitchen); // Vul hier ook de juiste adressen in
-	MotionSensor msBathroom(0x8C, &bathroom);
-	MotionSensor msLivingroom(0xCC ,&livingRoom);
 
-	/*BUTTONS + BUZZER*/
-	Buzzer buzzerSmoke;
-	Sensor buttonBed;
-	Sensor buttonSmokeDetector(buzzerSmoke);
-	
-	/*TEMP SENSOREN*/
-	TemperatureSensor tempBathroom;
-	TemperatureSensor tempLiving;
 	
 	threads pollingQuick(pollingMSandButtons);
+    threads pollingSlow(pollingTempSensor);
 
 	/*Threads*/
 /*	thread ms1(&MotionSensor::detectMotion,msKitchen);

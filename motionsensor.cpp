@@ -19,6 +19,16 @@ void MotionSensor::detectMotion(WirePi *Wire)
 		
 		if(analogReadingArduino > 6)
 		{
-			pLight->on();
+            status = true;
 		}
+        else{
+            status  = false;
+        }
+}
+void MotionSensor::lightOn(){
+    pLight->on();
+}
+void MotionSensor::lightOff()
+{
+    pLight->off();
 }

@@ -18,6 +18,10 @@ bool Sensor::getStatus() const
 {
     return status;
 }
+void setStatus(bool s)
+{
+    status = s;
+}
 
 void Sensor::activate()
 {
