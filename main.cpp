@@ -29,29 +29,29 @@ TemperatureSensor tempBathroom;
 TemperatureSensor tempLiving;
 
 void setup(){
-	// Activate PWM for the 2 LED lights
-	string start = "sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"" + to_string(/* VUL ADRES IN L1 */) + "\"";
-	system(start.c_str());
-	start = "sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"" + to_string(/* VUL ADRES IN L2 */) + "\"";
-	system(start.c_str());
+    // Activate PWM for the 2 LED lights
+    string start = "sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"" + to_string(/* VUL ADRES IN L1 */) + "\"";
+    system(start.c_str());
+    start = "sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"" + to_string(/* VUL ADRES IN L2 */) + "\"";
+    system(start.c_str());
 }
 
 void pollingMSandButtons(){
 
-	SerialPi Serial;
-	WirePi Wire;
-	SPIPi SPI;
+    SerialPi Serial;
+    WirePi Wire;
+    SPIPi SPI;
 
-	Wire.begin();
+    Wire.begin();
 
-	while(1){
-		msKitchen.detectMotion(&Wire);
+    while(1){
+        msKitchen.detectMotion(&Wire);
         msBathroom.detectMotion(&Wire);
         msLivingroom.detectMotion(&Wire);
 
         buttonSmokeDetector.IsActive();
-		buttonBed.IsActive();
-	}
+        buttonBed.IsActive();
+    }
 }
 void Logic_Controller(){
     bool statusKitchen;
@@ -103,6 +103,14 @@ void Logic_Controller(){
         else{
             buttonSmokeDetector.pBuzzer->buzzOff();
         }
+        int a;
+        puts ("Press a for buzzer. Press 'exit'.");
+        do
+        {
+          a=getchar();
+          buzzerSmoke.buzzOn(a);
+        } while (a != '.');
+        return 0;
     }
 
 
@@ -114,30 +122,30 @@ void pollingTempSensor()
 
 }
 
+
+
 int main()
 {
-	void setup();
+    void setup();
 
-
-	
-	threads pollingQuick(pollingMSandButtons);
+    threads pollingQuick(pollingMSandButtons);
     threads pollingSlow(pollingTempSensor);
 
-	/*Threads*/
+    /*Threads*/
 /*	thread ms1(&MotionSensor::detectMotion,msKitchen);
-	thread ms2(&MotionSensor::detectMotion,msLivingroom);
-	thread ms3(&MotionSensor::detectMotion,msBathroom);
-	
+    thread ms2(&MotionSensor::detectMotion,msLivingroom);
+    thread ms3(&MotionSensor::detectMotion,msBathroom);
 
-	thread bb(&Sensor::IsActive,buttonBed);
-	thread sd(&Sensor::IsActive,buttonSmokeDetector);
-		  
-	thread rt(&TemperatureSensor::readTemperature,tempLiving);
-	
-	//thread timer(&);
+
+    thread bb(&Sensor::IsActive,buttonBed);
+    thread sd(&Sensor::IsActive,buttonSmokeDetector);
+
+    thread rt(&TemperatureSensor::readTemperature,tempLiving);
+
+    //thread timer(&);
 */
-	while(1){}
-	return 0;
+    while(1){}
+    return 0;
 }
 
 

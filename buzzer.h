@@ -5,7 +5,7 @@ class Buzzer
 {
 	public:
 		Buzzer();
-		void buzzOn();
+        void buzzOn(int a);
 		void buzzOff();
         void getStatusDetector();
 	private:

@@ -1,15 +1,18 @@
 #include "buzzer.h"
 #include <iostream>
+#include <string.h>
 
 using namespace std;
 
 Buzzer::Buzzer(): status(0)
 {}
 
-void Buzzer::buzzOn()
+void Buzzer::buzzOn(int a)
 {
 	status=true;
+    if (a=='a'){
     cout<<"testbuzz"<<endl;
+    }
 }
 
 void Buzzer::buzzOff()
