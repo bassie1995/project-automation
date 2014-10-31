@@ -30,37 +30,44 @@ using namespace std;
 	LED *bathroom;
 	RGBLight *livingroom;
 
-	//~ /*MOTION CONTROL*/
-	MotionSensor *msKitchen; // Vul hier ook de juiste adressen in
+	/*MOTION CONTROL*/
+	MotionSensor *msKitchen; 
 	MotionSensor *msBathroom;
 	MotionSensor *msLivingroom;
 
 	Buzzer *buzzerSmoke;
-	Sensor *buttonBed;
 	Sensor *buttonSmokeDetector;
 	Switch *nightDaySwitch;
 
 	/*TEMP SENSOREN*/
 	TemperatureSensor *tempBathroom;
-	TemperatureSensor *tempLiving;
+	TemperatureSensor *tempLivingRoom;
+	
+	WindowDecoration *winDec;
 
 void setup() {
 	// Activate PWM for the 2 LED lights
-	cout<<"AAPJE Setup Begin"<<endl;
 	
-	system("sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"CC\"");
-	system("sudo ./home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"8C\"");
+	system("/usr/local/bin/eibd -D -S -T -i --eibaddr=0.0.1 --daemon=/var/log/eibd.log --no-tunnel-client-queuing ipt:145.52.126.174");
+	system("sudo /home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"15\"");
+	system("sudo /home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"16\"");
 	
 	kitchen = new Light(212);		// placeholder
 	bathroom = new LED(969);		// placeholder
 	livingroom = new RGBLight(696);	// placeholder
 	
-	msKitchen = new MotionSensor(ANALOG_1, kitchen);
+	msKitchen = new MotionSensor(ANALOG_1, kitchen);	// Vul hier ook de juiste adressen in
 	msBathroom = new MotionSensor(ANALOG_2, bathroom);
 	msLivingroom = new MotionSensor(ANALOG_3, livingroom);
-	cout<<"AAPJE Setup End"<<endl;
 	
+	buzzerSmoke = new Buzzer();
+	buttonSmokeDetector = new Sensor();
+	nightDaySwitch = new Switch();
 	
+	tempBathroom = new TemperatureSensor(51);
+	tempLivingRoom = new TemperatureSensor(50);
+	
+	winDec = new WindowDecoration();
 }
 
 void pollingMSandButtons() {
@@ -70,102 +77,120 @@ void pollingMSandButtons() {
 	SPIPi SPI;
 
 	Wire.begin();
-	cout<<"AAPJE Polling MSand B1"<<endl;
-	while(1)
-	{	
-		
+	while(1) {			
 		msKitchen->detectMotion(&Wire);
         msBathroom->detectMotion(&Wire);
         msLivingroom->detectMotion(&Wire);
-		cout<<"AAPJEPolling MSand B2"<<endl;
-//      buttonSmokeDetector->isActive();
-//		buttonBed->isActive();
 	}
 }
-void logicController(){
+
+void logicController() {
     bool statusKitchen;
     bool statusBathroom;
     bool statusLivingRoom;
     bool statusDay;
     bool statusDetector;
     
+    float tempBath;
+    float tempLiving;
+    
     while(1) {
+		if (statusDay) {
+			nightDaySwitch->deactivate();
+		} else {
+			nightDaySwitch->activate();
+		}
+		
+		// cout<<"aapje logiccontroller"<<endl;
         statusKitchen = msKitchen->isActive();
         statusBathroom = msBathroom->isActive();
         statusLivingRoom = msLivingroom->isActive();
+        
         statusDay = nightDaySwitch->isActive();
+        
         statusDetector = buttonSmokeDetector->isActive();
-
-        if(statusDay) //true als het dag is
-		{
-            if(statusKitchen)
-            {
+ 
+        if(statusDay) {
+            if(statusKitchen) {
+                msKitchen->lightOn();
+            } else {
+				msKitchen->lightOff();
+            }
+            
+            if(statusBathroom) {
+                msBathroom->lightOn();
+            } else {
+				msBathroom->lightOff(); 
+            } 
+            
+            if(statusLivingRoom) {
+				if (!winDec->isUp()) {
+					msLivingroom->lightOn();
+				}
+            } else {
+				msLivingroom->lightOff();
+            }
+        } else {
+			if(statusKitchen) {
                 msKitchen->lightOn();
             }
-            else{
-// hier komt de uit fuctie
+            else {
+				msKitchen->lightOff(); 
             }
-            if(statusBathroom)
-            {
+            
+            if(statusBathroom) {
                 msBathroom->lightOn();
+            } else {
+				msBathroom->lightOff();
             }
-            else
-            {
- // hier komt de uit fuctie
-            }
-            if(statusLivingRoom)
-            {
+            
+			if(statusLivingRoom) {
                 msLivingroom->lightOn();
-            }
-            else{
-// hier komt de uit fuctie
+            } else {
+				msLivingroom->lightOff();
             }
         }
-        else // hier als het nacht is
-        {
-
-        }
-        if(statusDetector)
-        {
+        
+        if(statusDetector) {
             buttonSmokeDetector->buzzOn();
-        }
-        else{
+        } else {
             buttonSmokeDetector->buzzOff();
         }
+        
+        if(tempBath > 42.0) {
+			digitalWrite(222, LOW);	// Placeholders
+		} else if (tempBath < 30.0) {
+			digitalWrite(222, HIGH);
+		}
+		
+		if (tempLiving > 25.0) {
+			winDec->down();
+		} else {
+			winDec->up();
+		}
+                
+		this_thread::sleep_for(chrono::seconds(30));
     }
-
+	
 
 }
 void pollingTempSensor()
 {
-	cout<<"AAPJE PollingTempBegin"<<endl;
-    this_thread::sleep_for(chrono::seconds(3));
-    cout<<"AAPJE PollingTempEnd"<<endl;
+	while(1) {
+		tempBathroom->readTemperature();
+		tempLivingRoom->readTemperature();
+	}
+	this_thread::sleep_for(chrono::seconds(10));
 }
 
 int main()
 {
-	void setup(); // Y U NO WORK
+	setup();
 	thread pollingQuick (pollingMSandButtons);
     thread pollingSlow (pollingTempSensor);
-    
-    //this_thread::sleep_for(chrono::seconds(1));
-	cout<<"AAPJE Fin"<<endl;
-	/*Threads*/
-/*	thread ms1(&MotionSensor::detectMotion,msKitchen);
-	thread ms2(&MotionSensor::detectMotion,msLivingroom);
-	thread ms3(&MotionSensor::detectMotion,msBathroom);
+    logicController();
 	
-
-	thread bb(&Sensor::IsActive,buttonBed);
-	thread sd(&Sensor::IsActive,buttonSmokeDetector);
-		  
-	thread rt(&TemperatureSensor::readTemperature,tempLiving);
-	
-	//thread timer(&);
-*/
-	while(1)
-	{}
+	system("sudo killall servod");
 	
 	return 0;
 }

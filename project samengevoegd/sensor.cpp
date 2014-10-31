@@ -27,7 +27,7 @@ void Sensor::deactivate()
 
 bool Sensor::isActive() const
 {
-	return false;
+	return status;
     //detect ingedrukt
     // activeer
 

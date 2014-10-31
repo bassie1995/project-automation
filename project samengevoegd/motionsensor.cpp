@@ -6,18 +6,18 @@ MotionSensor::MotionSensor(int msaddress, Light* pL): pLight(pL), address(msaddr
 {}
 
 void MotionSensor::detectMotion(WirePi *Wire) {
-	cout<<"DMotion"<<endl;
+	//cout<<"DMotion"<<endl;
 	
 	//Wire->beginTransmission(8);
 	//Wire->write(address);
 	//Wire->endTransmission();
-	cout<<"DMotion2"<<endl;
+	//cout<<"DMotion2"<<endl;
 	//~ Wire->requestFrom(8,2);
 	//~ val0 = Wire->read();
 	//~ val1 = Wire->read();
 	//channelReading = int(val0)*16 + int(val1>>4);
 	//analogReadingArduino = channelReading * 1023 / 4095;
-	cout<<"DMotion3"<<endl;
+	//cout<<"DMotion3"<<endl;
 	//~ if(analogReadingArduino > 6)
 	//~ {
 		//~ activate();
@@ -25,6 +25,8 @@ void MotionSensor::detectMotion(WirePi *Wire) {
 	//~ else{
 		//~ deactivate();
 	//~ }
+	
+	
 }
 
 void MotionSensor::lightOn() {
