@@ -11,7 +11,7 @@ void WindowDecoration::up()
 			string str = "sudo echo P1-" + to_string(address) + "=" + to_string(i*10) + " > /dev/servoblaster";
 			system(str.c_str());
 		}
-		// move servo up, no testing possible so far
+		
 		delay(10);
 		status = true;
 	}
@@ -24,7 +24,7 @@ void WindowDecoration::down()
 			string str = "sudo echo P1-" + to_string(address) + "=" + to_string(i*10) + " > /dev/servoblaster";
 			system(str.c_str());
 		}
-		// move servo down, no testing possible so far
+		
 		delay(10);
 		status = false;
 	}

@@ -16,7 +16,8 @@ class MotionSensor : public Sensor
         void detectMotion(WirePi*);
         void lightOn();
         void lightOff();
-        void setColor(int r, int g, int b, int w);
+        //void setColor(int r, int g, int b, int w);
+        Light* getpLight() const;
 	private:
 		Light* pLight;
 		int address;

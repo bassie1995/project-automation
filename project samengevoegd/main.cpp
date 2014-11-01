@@ -46,8 +46,7 @@ void logicController() {
     
     while(1)
     {
-		pinMode(13, OUTPUT);
-		cout<<digitalRead(13)<<endl;
+		
 		
 		// cout<<"aapje logiccontroller"<<endl;
         statusKitchen = msKitchen->isActive();
@@ -115,10 +114,10 @@ void logicController() {
                     msBathroom->lightOn();
             }
         
-        if(tempBath > 42.0) {
+        if(tempBath > 25.0) {
 			cout<<"Kill water heater"<<endl;
 			//digitalWrite(222, LOW);	// Placeholders
-		} else if (tempBath < 30.0) {
+		} else if (tempBath < 25.0) {
 			cout<<"Enable water heater"<<endl;
 			//digitalWrite(222, HIGH);
 		}

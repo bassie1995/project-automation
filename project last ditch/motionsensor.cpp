@@ -20,12 +20,13 @@ void MotionSensor::detectMotion(WirePi *Wire) {
     
     if(analogReadingArduino > 6) {
         activate();
-        cout<<"Motion = "<<analogReadingArduino<<", detectMotion Activated"<<endl;
-        lightOn();
+        //cout<<"Motion = "<<analogReadingArduino<<", detectMotion Activated"<<endl;
+        //lightOn();
     } else {
+		
         deactivate();
-        cout<<"Motion = "<<analogReadingArduino<<", detectMotion Deactivated"<<endl;
-        lightOff();
+        //cout<<"Motion = "<<analogReadingArduino<<", detectMotion Deactivated"<<endl;
+        //lightOff();
     }	
 }
 
@@ -36,7 +37,12 @@ void MotionSensor::lightOn() { // logic for turning on the lights /w timing
 void MotionSensor::lightOff() { // logic for turning off the lights /w timing
     pLight->off();
 }
-
+/*
 void MotionSensor::setColor(int r, int g, int b, int w) {
     pLight->changeColor(r, g, b, w);
+}
+*/
+Light* MotionSensor::getpLight() const
+{
+	return pLight;
 }

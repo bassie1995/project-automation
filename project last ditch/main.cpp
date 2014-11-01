@@ -28,6 +28,7 @@ void pollingMSandButtons() {
         msBathroom->detectMotion(&Wire);
         msLivingroom->detectMotion(&Wire);
         // Digital Read for frontDoorSensor->activate();
+        this_thread::sleep_for(chrono::seconds(2));
 	}
 }
 
@@ -40,45 +41,45 @@ void logicController() {
     
     bool statusDoorSensor=false;
     
-    float tempBath;
-    float tempLiving;
-    
+    int test=0;
     while(1)
     {
-		pinMode(13, OUTPUT);
-		cout<<digitalRead(13)<<endl;
-
         statusKitchen = msKitchen->isActive();
         statusBathroom = msBathroom->isActive();
         statusLivingRoom = msLivingroom->isActive();
-                
+        
+        if(test>=3) {
+			test=0; 
+			statusDay = !statusDay;
+		}       
         statusDetector = buttonSmokeDetector->isActive();
- 
+		cout<<test<<endl;
         statusDoorSensor = frontDoorSensor->isActive();
 
-        statusDay = !statusDay;
         cout<<"Is it day? "<<statusDay<<endl<<endl;
 
         if(statusDay) {
-            if(statusKitchen && !kitchen->getStatus())
+            if(/*statusKitchen*/test==0 && !(kitchen->getStatus()))
             {
                 msKitchen->lightOn();
                 msBathroom->lightOff();
                 msLivingroom->lightOff();
             }
 
-            if(statusBathroom && !bathroom->getStatus())
+            if(/*statusBathroom*/test==1 && !(bathroom->getStatus()))
             {
                 msBathroom->lightOn();
                 msKitchen->lightOff();
                 msLivingroom->lightOff();
             }
-            if(statusLivingRoom && !livingroom->getStatus())
+            if(/*statusLivingRoom*/test==2 && !(livingroom->getStatus()))
             {
-                if (!winDec->isUp())
-                {
-                    msLivingroom->setColor(10, 100, 10, 75);
-				}
+                //~ if (!(winDec->isUp()))
+                //~ {
+					RGBLight* RGB = dynamic_cast<RGBLight*> (msLivingroom->getpLight());
+					if(RGB)
+						RGB->changeColor(10, 100, 100, 75);
+				//~ }
                 msKitchen->lightOff();
                 msBathroom->lightOff();
             }
@@ -89,37 +90,44 @@ void logicController() {
                 msLivingroom->lightOff();
             }
         } else {
-            if(statusKitchen)
+            if(/*statusKitchen*/test==0)
                 msKitchen->lightOn();
             else
                 msKitchen->lightOff();
-            if(statusLivingRoom)
+            if(/*statusLivingRoom*/test==1)
             {
-                msLivingroom->setColor(5, 0, 50, 20);
+                RGBLight* RGB = dynamic_cast<RGBLight*> (msLivingroom->getpLight());
+                if(RGB)
+					RGB->changeColor(5, 0, 50, 20);
                 msBathroom->lightOff();
             }
             else
                 msLivingroom->lightOff();
 
-            if(statusBathroom)
+            if(/*statusBathroom*/test==2)
                 msBathroom->lightOn();
         }
         
-        if(tempBath > 24.0) {               // 42.0
+        if(tempBathroom->getTemperature() > 24.0) {               // 42.0
 			cout<<"Kill water heater"<<endl;
             //digitalWrite(222, LOW);	// Useless for the demo
-        } else if (tempBath <= 24.0) {       // 38.0
+        } else if (tempBathroom->getTemperature() <= 24.0) {       // 38.0
             cout<<"Re-enable water heater"<<endl;
 			//digitalWrite(222, HIGH);
 		}
+		cout<<"tempLiving: "<< tempLivingRoom->getTemperature() <<endl;
 		
-		if (tempLiving > 23.0) {
+		if (tempLivingRoom->getTemperature() > 24.0) {
 			winDec->down();
+			cout<<(winDec->isUp())<<endl;
 		} else {
+			cout<<(winDec->isUp())<<endl;
 			winDec->up();
 		}
-                
-        this_thread::sleep_for(chrono::seconds(30)); // Moet lagere waarde krijgen, of light control een andere plek geven. Dit is handig voor de demo.
+        
+        test++;
+        
+        this_thread::sleep_for(chrono::seconds(10));
     }
 }
 void pollingTempSensor()

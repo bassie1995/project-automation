@@ -13,7 +13,7 @@ class Light
 		bool getStatus() const;
 		virtual void on();
 		virtual void off();
-        virtual void changeColor(int, int, int, int);
+        //virtual void changeColor(int, int, int, int);
 		int getAddress() const;
 	private:
 		bool status;

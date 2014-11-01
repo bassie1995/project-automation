@@ -9,6 +9,7 @@ Buzzer::Buzzer(): status(0), address(29383) // Placeholderino
 void Buzzer::buzzOn()
 {
 	status=true;
+	// aan waarde sturen naar buzzer poort
 }
 
 void Buzzer::buzzOff()

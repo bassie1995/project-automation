@@ -35,7 +35,7 @@ Sensor* frontDoorSensor = new Sensor();
 
 WindowDecoration* winDec = new WindowDecoration(18);
 
-TemperatureSensor* tempBathroom = new TemperatureSensor("0/0/51");
-TemperatureSensor* tempLivingRoom = new TemperatureSensor("0/0/50");
+TemperatureSensor* tempBathroom = new TemperatureSensor("0/0/50");
+TemperatureSensor* tempLivingRoom = new TemperatureSensor("0/0/51");
 
 #endif // MAIN_H
