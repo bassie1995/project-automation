@@ -11,8 +11,8 @@ class LED : public Light
 {
 	public:
 		LED(int);
-        void on(bool);
-        void off(bool);
+        void on();
+        void off();
 
 	private:
 		

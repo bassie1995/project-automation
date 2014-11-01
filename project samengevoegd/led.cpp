@@ -1,16 +1,17 @@
 #include "led.h"
 #include <string>
+#include <iostream>
 
 using namespace std;
 
 LED::LED(int tempAddress) : Light(tempAddress)
 {}
 
-void LED::on(bool day)
+void LED::on()
 {
 	Light::on();
 
-    if(day)
+    if(true)
         for(int i=10; i<=100; i=i+10)
         {
             string str = "sudo echo P1-" + to_string(getAddress()) + "=" + to_string(i) + "% > /dev/servoblaster";
@@ -24,11 +25,11 @@ void LED::on(bool day)
         }
 }
 
-void LED::off(bool day)
+void LED::off()
 {
     Light::off();
 
-    if(day)
+    if(true)
         for(int i=10; i<=100; i=i+10)
         {
             string str = "sudo echo P1-" + to_string(getAddress()) + "=" + to_string(100-i) + "% > /dev/servoblaster";

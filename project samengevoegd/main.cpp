@@ -10,14 +10,16 @@
 
 using namespace std;
 
-
+// SLUIT LEDS AAN OP Dig PIN 2 & Dig PIN 3
 
 void setup() {
 	// Activate PWM for the 2 LED lights
 	
-	system("/usr/local/bin/eibd -D -S -T -i --eibaddr=0.0.1 --daemon=/var/log/eibd.log --no-tunnel-client-queuing ipt:145.52.126.174");
-	system("sudo /home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"15\"");
-    system("sudo /home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"16\"");
+	//system("/usr/local/bin/eibd -D -S -T -i --eibaddr=0.0.1 --daemon=/var/log/eibd.log --no-tunnel-client-queuing ipt:145.52.126.174");
+	system("sudo /home/pi/Desktop/test.sh");
+	//system("sudo /home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"16\"");
+	//delay(200);
+    //system("sudo /home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"12\"");
 }
 
 void pollingMSandButtons() {
@@ -41,7 +43,9 @@ void logicController() {
     bool statusLivingRoom;
     bool statusDay;
     bool statusDetector;
-    bool manualMode;
+    bool manualMode=false;
+    
+    bool statusDoorSensor = false;
     
     float tempBath;
     float tempLiving;
@@ -64,24 +68,24 @@ void logicController() {
         
         statusDetector = buttonSmokeDetector->isActive();
  
-        statusDoorSensor = frontDoorSensor->IsActive();
+        statusDoorSensor = frontDoorSensor->isActive();
 
         if(statusDay && !manualMode)
         {
-            if(statusKitchen)
+            if(statusKitchen && !kitchen->getStatus())
             {
                 msKitchen->lightOn();
                 msBathroom->lightOff();
                 msLivingroom->lightOff();
             }
 
-            if(statusBathroom)
+            if(statusBathroom && !bathroom->getStatus())
             {
                 msBathroom->lightOn();
                 msKitchen->lightOff();
                 msLivingroom->lightOff();
             }
-            if(statusLivingRoom)
+            if(statusLivingRoom && !livingroom->getStatus())
             {
                 if (!winDec->isUp())
                 {
@@ -116,11 +120,11 @@ void logicController() {
                     msBathroom->lightOn();
             }
         
-        if(statusDetector) {
-            buttonSmokeDetector->buzzOn();
-        } else {
-            buttonSmokeDetector->buzzOff();
-        }
+        //if(statusDetector) {
+           
+        //} else {
+            
+        //}
         
         if(tempBath > 42.0) {
 			digitalWrite(222, LOW);	// Placeholders
@@ -156,6 +160,7 @@ int main()
     logicController();
 	
 	system("sudo killall servod");
+	
 	
 	return 0;
 }

@@ -12,17 +12,17 @@ RGBLight::~RGBLight()
 {}
 
 void RGBLight::on() {
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/2 09");
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/5 09");
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/8 09");
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/26 09");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/3 0F");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/6 0F");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/9 0F");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/27 0F");
 }
 
 void RGBLight::off() {
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/2 00");
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/5 00");
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/8 00");
-	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/26 00");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/3 00");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/6 00");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/9 00");
+	system("/usr/local/bin/groupsocketwrite ip:127.0.0.1 0/0/27 00");
 }
 
 void RGBLight::changeColor(int r, int g, int b, int w) {

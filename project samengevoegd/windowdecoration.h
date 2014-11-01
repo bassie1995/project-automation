@@ -8,12 +8,13 @@ using namespace std;
 class WindowDecoration
 {
 	public:
-		WindowDecoration();
+		WindowDecoration(/*int adresje place holder*/);
 		void up();
 		void down();
-		bool isUp();
+		bool isUp() const;
 	private:
 		bool status;
+		int adres;
 };
 
 #endif

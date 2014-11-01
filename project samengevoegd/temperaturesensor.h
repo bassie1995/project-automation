@@ -7,16 +7,16 @@
 #include <iostream>
 #include <bitset>
 #include <math.h>
-
+using namespace std;
 class TemperatureSensor : public Sensor
 {
 	public:
-		TemperatureSensor(int);
-		int  getTemperature();
+		TemperatureSensor(string);
+		double  getTemperature();
         void readTemperature();
 	private:
-		int ident;
-		int temperature;
+		string ident;
+		double temperature;
 };
 
 #endif

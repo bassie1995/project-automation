@@ -44,13 +44,3 @@ bool Sensor::isActive() const
     // deactiveer
 
 }
-
-void Sensor::buzzOff() {
-    if(pBuzzer)
-        pBuzzer->buzzOff();
-}
-
-void Sensor::buzzOn() {
-    if(pBuzzer)
-        pBuzzer->buzzOn();
-}
