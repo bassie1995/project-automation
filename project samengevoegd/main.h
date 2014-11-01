@@ -3,7 +3,6 @@
 
 #include "rgblight.h"
 #include "led.h"
-#include "switch.h"
 #include "sensor.h"
 #include "motionsensor.h"
 #include "temperaturesensor.h"
@@ -32,9 +31,7 @@ Buzzer* buzzerSmoke = new Buzzer();
 Sensor* buttonSmokeDetector = new Sensor();
 Sensor* frontDoorSensor = new Sensor();
 
-Switch* nightDaySwitch = new Switch();
-
-WindowDecoration* winDec = new WindowDecoration();
+WindowDecoration* winDec = new WindowDecoration(18);
 
 TemperatureSensor* tempBathroom = new TemperatureSensor("0/0/51");
 TemperatureSensor* tempLivingRoom = new TemperatureSensor("0/0/50");

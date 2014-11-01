@@ -14,16 +14,10 @@ using namespace std;
 
 void setup() {
 	// Activate PWM for the 2 LED lights
-	
-	//system("/usr/local/bin/eibd -D -S -T -i --eibaddr=0.0.1 --daemon=/var/log/eibd.log --no-tunnel-client-queuing ipt:145.52.126.174");
 	system("sudo /home/pi/Desktop/test.sh");
-	//system("sudo /home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"16\"");
-	//delay(200);
-    //system("sudo /home/pi/PiBits/ServoBlaster/user/servod --min=0 --max=100% --p1pins=\"12\"");
 }
 
 void pollingMSandButtons() {
-
 	SerialPi Serial;
 	WirePi Wire;
 	SPIPi SPI;
@@ -45,19 +39,15 @@ void logicController() {
     bool statusDetector;
     bool manualMode=false;
     
-    bool statusDoorSensor = false;
+    bool statusDoorSensor=false;
     
     float tempBath;
     float tempLiving;
     
     while(1)
     {
-
-        if (statusDay)
-			nightDaySwitch->deactivate();
-        else
-			nightDaySwitch->activate();
-
+		pinMode(13, OUTPUT);
+		cout<<digitalRead(13)<<endl;
 		
 		// cout<<"aapje logiccontroller"<<endl;
         statusKitchen = msKitchen->isActive();
@@ -69,6 +59,11 @@ void logicController() {
         statusDetector = buttonSmokeDetector->isActive();
  
         statusDoorSensor = frontDoorSensor->isActive();
+        
+        if (statusDay)
+			nightDaySwitch->deactivate();
+        else
+			nightDaySwitch->activate();
 
         if(statusDay && !manualMode)
         {
@@ -120,19 +115,15 @@ void logicController() {
                     msBathroom->lightOn();
             }
         
-        //if(statusDetector) {
-           
-        //} else {
-            
-        //}
-        
         if(tempBath > 42.0) {
-			digitalWrite(222, LOW);	// Placeholders
+			cout<<"Kill water heater"<<endl;
+			//digitalWrite(222, LOW);	// Placeholders
 		} else if (tempBath < 30.0) {
-			digitalWrite(222, HIGH);
+			cout<<"Enable water heater"<<endl;
+			//digitalWrite(222, HIGH);
 		}
 		
-		if (tempLiving > 25.0) {
+		if (tempLiving > 23.0) {
 			winDec->down();
 		} else {
 			winDec->up();
@@ -148,8 +139,8 @@ void pollingTempSensor()
 	while(1) {
 		tempBathroom->readTemperature();
 		tempLivingRoom->readTemperature();
+		this_thread::sleep_for(chrono::seconds(5));
 	}
-	this_thread::sleep_for(chrono::seconds(10));
 }
 
 int main()
