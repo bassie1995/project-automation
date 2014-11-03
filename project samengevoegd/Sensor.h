@@ -9,9 +9,7 @@ class Sensor
 	public:
 		Sensor();
         Sensor(Buzzer &);
-		virtual ~Sensor();
-        bool getStatus() const;
-        void setStatus(bool);
+        virtual ~Sensor();
 		void activate();
 		void deactivate();
         void IsActive();

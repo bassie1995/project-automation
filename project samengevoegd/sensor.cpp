@@ -46,9 +46,11 @@ bool Sensor::isActive() const
 }
 
 void Sensor::buzzOff() {
-	pBuzzer->buzzOff();
+    if(pBuzzer)
+        pBuzzer->buzzOff();
 }
 
 void Sensor::buzzOn() {
-	pBuzzer->buzzOn();
+    if(pBuzzer)
+        pBuzzer->buzzOn();
 }
