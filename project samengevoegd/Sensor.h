@@ -1,8 +1,10 @@
-#include "windowdecoration.h"
+//#include "windowdecoration.h"
 #include "buzzer.h"
 
 #ifndef SENSOR_H
 #define SENSOR_H
+
+using namespace std;
 
 class Sensor
 {
@@ -10,14 +12,14 @@ class Sensor
 		Sensor();
         Sensor(Buzzer &);
 		virtual ~Sensor();
-        bool getStatus() const;
-        void setStatus(bool);
 		void activate();
 		void deactivate();
-        void IsActive();
+        bool isActive() const;
+        void buzzOn();
+        void buzzOff();
 	private:
 		bool status;
-		WindowDecoration* pWinDec;
+		//WindowDecoration* pWinDec;
 		Buzzer* pBuzzer;
 };
 
