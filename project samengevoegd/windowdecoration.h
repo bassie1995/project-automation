@@ -1,14 +1,20 @@
 #ifndef WINDOWDECORATION_H
 #define WINDOWDECORATION_H
 
+#include "arduPi.h"
+
+using namespace std;
+
 class WindowDecoration
 {
 	public:
-		WindowDecoration();
+		WindowDecoration(/*int adresje place holder*/);
 		void up();
 		void down();
+		bool isUp() const;
 	private:
-		int status;
+		bool status;
+		int adres;
 };
 
 #endif

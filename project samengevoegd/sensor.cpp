@@ -27,7 +27,7 @@ void Sensor::deactivate()
 
 bool Sensor::isActive() const
 {
-	return false;
+	return status;
     //detect ingedrukt
     // activeer
 
@@ -43,12 +43,4 @@ bool Sensor::isActive() const
 
     // deactiveer
 
-}
-
-void Sensor::buzzOff() {
-	pBuzzer->buzzOff();
-}
-
-void Sensor::buzzOn() {
-	pBuzzer->buzzOn();
 }

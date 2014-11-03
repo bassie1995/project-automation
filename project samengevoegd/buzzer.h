@@ -10,6 +10,7 @@ class Buzzer
         void getStatusDetector();
 	private:
 		bool status;
+		int address;
 };
 
 #endif

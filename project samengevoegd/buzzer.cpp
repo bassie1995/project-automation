@@ -3,13 +3,12 @@
 
 using namespace std;
 
-Buzzer::Buzzer(): status(0)
+Buzzer::Buzzer(): status(0), address(29383) // Placeholderino
 {}
 
 void Buzzer::buzzOn()
 {
 	status=true;
-    cout<<"testbuzz"<<endl;
 }
 
 void Buzzer::buzzOff()
@@ -18,11 +17,5 @@ void Buzzer::buzzOff()
 }
 void Buzzer::getStatusDetector()
 {
-//    while(1){
-//    for(int i=0;i<640000000;i++)
-//    {
-//        // dit wordt een delay
-//    }
-//   cout<<"testBuzzer"<<endl;  // hier komt de motioncode
-//    }
+
 }
